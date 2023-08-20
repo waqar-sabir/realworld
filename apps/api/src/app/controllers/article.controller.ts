@@ -6,11 +6,13 @@ import {
   deleteArticle,
   deleteComment,
   favoriteArticle,
+  dislikeArticle,
   getArticle,
   getArticles,
   getCommentsByArticle,
   getFeed,
   unfavoriteArticle,
+  unDislikedArticle,
   updateArticle,
 } from '../services/article.service';
 
@@ -229,6 +231,26 @@ router.post(
 );
 
 /**
+ * Dislike article
+ * @auth required
+ * @route {POST} /articles/:slug/dislike
+ * @param slug slug of the article (based on the title)
+ * @returns article disliked article
+ */
+router.post(
+  '/articles/:slug/dislike',
+  auth.required,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const article = await dislikeArticle(req.params.slug, req.auth?.user?.username as string);
+      res.json({ article });
+    } catch (error) {
+      next(error);
+    }
+  },
+);
+
+/**
  * Unfavorite article
  * @auth required
  * @route {DELETE} /articles/:slug/favorite
@@ -241,6 +263,26 @@ router.delete(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const article = await unfavoriteArticle(req.params.slug, req.auth?.user?.username as string);
+      res.json({ article });
+    } catch (error) {
+      next(error);
+    }
+  },
+);
+
+/**
+ * UnDislike article
+ * @auth required
+ * @route {DELETE} /articles/:slug/dislike
+ * @param slug slug of the article (based on the title)
+ * @returns article UnDislike article
+ */
+router.delete(
+  '/articles/:slug/dislike',
+  auth.required,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const article = await unDislikedArticle(req.params.slug, req.auth?.user?.username as string);
       res.json({ article });
     } catch (error) {
       next(error);

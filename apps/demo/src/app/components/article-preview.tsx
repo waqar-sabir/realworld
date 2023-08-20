@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import TagList from './tag-list';
 import FormattedDate from './formatted-date';
 import FavoriteButton from './favorite-button';
+import DislikeButton from './dislike-button';
 
 interface Props {
   article: Article;
@@ -22,6 +23,7 @@ export default function ArticlePreview({ article }: Props) {
           <FormattedDate date={article.createdAt} />
         </div>
         <FavoriteButton article={article} />
+        <DislikeButton article={article} />
       </div>
       <Link to={'/article/' + article.slug} className="preview-link">
         <h1>{article.title}</h1>
